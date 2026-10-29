@@ -1,0 +1,69 @@
+Ok this is my idea 
+1. User provides a query on which information will be retrieved and instead of Redis, Kafka will take care of this for processing this data extracted from outside (either through Tavily, or Custom scraping mechanism etc {I had done multiple sources of extraction for VendorManagement I will check once,I and shashank had once also looked across something called as Scrapy github for opensource extraction}) Kafka will take care of converting into a suitable JSON ready format information, storing it in our Datatabase
+2.1. Simultaneously another Kafka process will work in dividing our Query into Atomic Level Claims* {for that again we have HF models like t5-claim-extractor or we can use Spacy rule based claim extractors}
+*(	Example being: 
+	• Input: "Subhash Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero."
+	• Atomic Decomposition:
+		1. "Subhash Chandra Bose was Indian."
+		2. "Subhash Chandra Bose was a nationalist."
+		3. "Subhash Chandra Bose showed defiant patriotism."
+		4. "Subhash Chandra Bose was considered a hero.
+)
+2.2. {Before moving to the next step, We can make some kind of analysis on how each method has some effect, should check and see what specific metrics are used i case of claim extraction}
+3. Next Using Each claim a KG(knowledge-graph) will be built ensuring the format as Subject-Verb-Object
+4. And now for each claim we can apply a hybrid Rag for information retrieval (again upto us, or use Some other method, Hybrid RAG is the video which I sent yesterday where he use BM25+Biencoder which theses user Reranking and Cross Encoder mechanism) {again in his github only there is a python file to check which method is more efficient and stuff}
+5. Now comes the  most important part, we have retireved Claim and eviidence related to this, next is to verify this (previosuly if yoou remeber I told about using the 2 LLM Architecture, but now lets leave that) 
+	5.1. Using NLI* Models 
+	5.2. Using the Attention weights of the NLI Models to understand influence of words
+	5.3 A simple entire sentence classification model (Again like previous sem NLP we can compare output provided by different models)
+	5.4 Using KG with Horn Rules (to tell it is easy, but dont know how to implement -- this is basically our 4th sem boolean algebra, needs manual rule wrting)
+*(
+	NLI is the task of deciding whether a premise entails a hypothesis.
+	-Premise = an evidence passage from RAG
+	-Hypothesis = a decomposed claim
+	-Output = one of three labels:
+	    -Entailment (SUPPORTED) — evidence confirms the claim
+	    -Contradiction (REFUTED) — evidence contradicts the claim
+	    -Neutral (NOT ENOUGH INFO) — evidence is unrelated or insufficient
+)
+	5.5 I would suggest if any more mathematical or algorithmic or light weight classifier methods are present andre let me know, especially the ones whihc are dynamic which 
+	can understand this Premise and Hypthesis Kind of Model {We should also focus on how we will finally tell which method is better, for that we might need to run on already 
+	well established dataset}
+6. Finally we can have a summariser to summarise each claim (like BART-base or Flan-T5-small) and then store every meta data related to that claim (to be presented to the user in frontend)
+7. Elasticsearch stores the final document per claim (basically all the steps which I told above)
+    -Original input text
+    -All decomposed claims with character offsets
+    -Evidence passages with source URLs
+    -NLI labels and confidences
+    -Attention highlights (token + weight)
+    -Rule traces
+    -Final verdict
+Why Elasticsearch specifically: (I dont know what exactly is the advantage other than fast retrieval due to "inverted key based indexing")
+   -Full-text search over your verdicts ("show me all refuted climate claims").
+   -Aggregations for research ("distribution of verdicts by source domain").
+   -Vector search (ES 8+) if you want to also store embeddings. meaning you may not need a separate FAISS index.
+   -Kibana gives you a zero-code analysis UI for free. (Kibana UI runnable in docker)
+
+In short
+1. Ingest (Kafka producer + consumer + sink to ES)
+2.1 Decompose query into atomic claims
+2.2 Compare extractors (metric: claim F1, coverage)
+3.   Extract SVO triples + build small KG
+4.   Hybrid RAG per claim (BM25 + dense → RRF → cross-encoder)
+5.1  NLI verdict per (claim, evidence) pair
+5.2  Attention weights from the NLI model
+5.3  Claim-level prior classifier (optional, if it earns its place)
+5.4  KG + Horn rule engine
+5.5  Signal merge (disagreement-aware verdict)
+6.   Explanation assembly (template, summarizer optional)
+7.   Elasticsearch + API + UI
+
+Some extra things which I can think about
+1. Claim extraction fails in case of Interlinked sentences like this
+Claim: "The director of the film that won the 2020 Oscar for Best Picture was born in Seoul."
+    You cannot verify this with one passage. You need to:
+        Hop 1: Which film won Best Picture 2020? → Parasite.
+        Hop 2: Who directed Parasite? → Bong Joon-ho.
+        Hop 3: Where was Bong Joon-ho born? → Daegu, South Korea.
+        Verify: The claim says Seoul. Refuted.
+Each hop depends on the output of the previous hop. That's the essence: the answer to one sub-question becomes the query for the next. Which means even the order according to which we verify claim and then store data in our database becomes important (Deepseek has named this the, Multihop vs Singlehop stratergy)
