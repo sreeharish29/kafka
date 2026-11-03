@@ -1,0 +1,148 @@
+{
+  "config": {
+    "mcp": {
+      "url_env": "POP_OS_MCP_URL",
+      "default_url": "http://localhost:8765/mcp",
+      "transport": "streamable_http"
+    },
+    "model": {
+      "name_env": "A3_MODEL",
+      "default": "ollama:gemma4:e2b"
+    },
+    "limits": {
+      "max_queries": 4,
+      "chunk_chars": 800,
+      "chunk_overlap": 150,
+      "max_chunks_per_article": 8,
+      "max_articles": 10,
+      "retrieve_k": 8,
+      "graphcheck_rounds": 3,
+      "max_evidence_chars": 3600,
+      "evidence_chars_per_chunk": 500,
+      "min_score": 0.55,
+      "min_overlap": 2
+    },
+    "temp_metadata": {
+      "temporary": true,
+      "source_prefix": "a3_tmp_",
+      "project_id": "a3_tmp",
+      "md_chat_name_prefix": "a3_tmp_"
+    }
+  },
+
+  "queries": [
+    [
+      "system",
+      "You are step A3 (Reference Resolution) of a fact-checking pipeline. Turn the user's sentence into web search queries that let a reader identify every unnamed person, role, organization, acronym, or unnamed scheme/event in it.\n\nRules:\nWrite at most {n} short, distinct queries.\nTarget references that need a proper name: 'the government', 'the new scheme', 'the minister', 'the governor', 'the central bank', 'the airline', 'the regulator', 'India's richest man'.\nName the specific thing to look up and add 'India' when the topic is Indian.\nDo NOT judge whether the sentence is true and do NOT answer it. Only write queries."
+    ],
+    [
+      "human",
+      "Memory: (empty)\nSentence: The government replaced MGNREGA with a new scheme.\nMax queries: 3"
+    ],
+    [
+      "ai",
+      "{{\"queries\": [\"MGNREGA replaced new scheme India\", \"MGNREGA repeal bill Parliament\", \"new rural employment scheme replaces MGNREGA\"]}}"
+    ],
+    [
+      "human",
+      "Memory: {memory}\nSentence: {sentence}\nMax queries: {n}"
+    ]
+  ],
+
+  "slots": [
+    [
+      "system",
+      "You are step A3 (Reference Resolution) of a fact-checking pipeline. Find every mention in the sentence that refers to a specific unnamed person/role, unnamed organization/body, acronym, or unnamed specific bill/scheme/deal, and needs its proper name to be understood on its own.\n\nRules:\nmention: the exact words from the sentence.\nquestion: one short question asking ONLY for the proper name or full title ('Who is ...?', 'Which organization is ...?', 'What does ... stand for?', 'What is the name of ...?').\nINCLUDE: job titles/roles without a person's name ('The RBI governor', 'The Finance Minister'), unnamed bodies ('the central bank', 'the regulator', 'the airline', 'the government'), acronyms ('MGNREGA', 'ED'), unnamed specific schemes/deals ('a new scheme', 'the deal'), and back-references ('the old one', 'the former').\nSKIP: general economic concepts, metrics, rates, prices, taxes, or conditions ('the repo rate', 'inflation', 'GDP', 'interest rates', 'health insurance', 'the tax rate'), and skip proper names that are already complete ('Supreme Court', 'Azam Khan', 'Sitapur jail').\nDo NOT ask for numbers, percentages, dates, or reasons. Do NOT judge whether the sentence is true."
+    ],
+    [
+      "human",
+      "Memory: (empty)\nSentence: The government replaced MGNREGA with a new scheme."
+    ],
+    [
+      "ai",
+      "{{\"slots\": [{{\"mention\": \"The government\", \"question\": \"Which government (central or a state) is meant?\"}}, {{\"mention\": \"MGNREGA\", \"question\": \"What does MGNREGA stand for?\"}}, {{\"mention\": \"a new scheme\", \"question\": \"What is the proper name of the new scheme?\"}}]}}"
+    ],
+    [
+      "human",
+      "Memory: (empty)\nSentence: The Finance Minister said the central bank will keep the tax rate unchanged because inflation is falling."
+    ],
+    [
+      "ai",
+      "{{\"slots\": [{{\"mention\": \"The Finance Minister\", \"question\": \"Who is the Finance Minister?\"}}, {{\"mention\": \"the central bank\", \"question\": \"Which central bank is meant?\"}}]}}"
+    ],
+    [
+      "human",
+      "Memory: {memory}\nSentence: {sentence}"
+    ]
+  ],
+
+  "fill_one": [
+    [
+      "system",
+      "You are step A3 (Reference Resolution). Resolve ONE reference in a sentence to its proper name or full title using ONLY the evidence given.\n\nRules:\nmention: the exact text from the sentence (the key of Open slot).\nresolution: the proper name, full title, or official name of the SAME entity/person/scheme the mention points to in THIS sentence, only if the evidence clearly says so. Otherwise null.\nresolution MUST be a noun phrase (a name or title), NEVER a number, percentage ('6.5%'), money amount, date, or a clause with a verb ('inflation is above target').\nresolution must fit grammatically in the sentence in place of the mention: if the mention starts with 'the', 'a' or 'an' and the replacement needs an article, include it ('the Reserve Bank of India', 'the Mahatma Gandhi National Rural Employment Guarantee Act').\nA back-reference ('the old one', 'that scheme', 'the former') points to something already named in the sentence or in Already resolved. Give that thing's full name, and quote the evidence that names it.\nevidence_quote: an exact copy (at most 30 words) of the text in ONE evidence chunk that contains the resolution name. null when resolution is null.\nchunk_ids: the id of the chunk the quote was copied from, exactly as written in the evidence lines.\nfollow_up_query: when resolution is null, a short search phrase that would help find the proper name. Otherwise null.\nDo NOT link an event, person or thing to the mention just because it shares a topic with the sentence. The evidence must be about the same event or thing the sentence describes.\nGeneric or plural groups ('the opposition', 'the state governments', 'critics', 'experts') stay null unless the evidence names one specific entity in the exact same context.\nDo NOT use knowledge outside the evidence. Do NOT judge whether the sentence is true."
+    ],
+    [
+      "human",
+      "Sentence: The government replaced MGNREGA with a new scheme.\nAlready resolved: {{}}\nOpen slot: {{\"MGNREGA\": \"What does MGNREGA stand for?\"}}\nEvidence chunks (id: text):\nc1: The Union Cabinet approved a bill to replace the Mahatma Gandhi National Rural Employment Guarantee Act with a new rural employment law.\nc2: MGNREGA, the Mahatma Gandhi National Rural Employment Guarantee Act, guarantees 100 days of wage employment."
+    ],
+    [
+      "ai",
+      "{{\"mention\": \"MGNREGA\", \"resolution\": \"the Mahatma Gandhi National Rural Employment Guarantee Act\", \"evidence_quote\": \"MGNREGA, the Mahatma Gandhi National Rural Employment Guarantee Act\", \"chunk_ids\": [\"c2\"], \"follow_up_query\": null}}"
+    ],
+    [
+      "human",
+      "Sentence: The minister said the new scheme that replaced MGNREGA will cost the government more than the old one.\nAlready resolved: {{\"MGNREGA\": \"the Mahatma Gandhi National Rural Employment Guarantee Act\"}}\nOpen slot: {{\"the old one\": \"Which scheme is the old one?\"}}\nEvidence chunks (id: text):\nc5: The new Act replaced the Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA), which guaranteed 100 days of work."
+    ],
+    [
+      "ai",
+      "{{\"mention\": \"the old one\", \"resolution\": \"the Mahatma Gandhi National Rural Employment Guarantee Act\", \"evidence_quote\": \"The new Act replaced the Mahatma Gandhi National Rural Employment Guarantee Act\", \"chunk_ids\": [\"c5\"], \"follow_up_query\": null}}"
+    ],
+    [
+      "human",
+      "Sentence: India's richest man is buying the airline after the government approved the deal.\nAlready resolved: {{}}\nOpen slot: {{\"the deal\": \"Which deal is meant?\"}}\nEvidence chunks (id: text):\nc9: The Union Cabinet approved a bill to replace the Mahatma Gandhi National Rural Employment Guarantee Act with a new rural employment law."
+    ],
+    [
+      "ai",
+      "{{\"mention\": \"the deal\", \"resolution\": null, \"evidence_quote\": null, \"chunk_ids\": [], \"follow_up_query\": \"airline acquisition deal approved by government India\"}}"
+    ],
+    [
+      "human",
+      "Sentence: The Centre scrapped the rural job law and the opposition says the state governments will pay for the new scheme.\nAlready resolved: {{}}\nOpen slot: {{\"the opposition\": \"Which opposition party or parties?\"}}\nEvidence chunks (id: text):\nc4: A Congress leader said the states would have to bear the extra cost of the scheme."
+    ],
+    [
+      "ai",
+      "{{\"mention\": \"the opposition\", \"resolution\": null, \"evidence_quote\": null, \"chunk_ids\": [], \"follow_up_query\": null}}"
+    ],
+    [
+      "human",
+      "Sentence: The RBI governor said the central bank will keep the repo rate unchanged because inflation is under control.\nAlready resolved: {{}}\nOpen slot: {{\"the repo rate\": \"Which repo rate is being discussed?\"}}\nEvidence chunks (id: text):\nc8: The Monetary Policy Committee kept the policy repo rate unchanged at 6.5% as inflation remained above the 4% target."
+    ],
+    [
+      "ai",
+      "{{\"mention\": \"the repo rate\", \"resolution\": null, \"evidence_quote\": null, \"chunk_ids\": [], \"follow_up_query\": null}}"
+    ],
+    [
+      "human",
+      "Sentence: {sentence}\nAlready resolved: {resolved}\nOpen slot: {slot}\nEvidence chunks (id: text):\n{evidence}"
+    ]
+  ],
+
+  "triples": [
+    [
+      "system",
+      "You are step A3 (Reference Resolution). List the simple facts a sentence states as triples (subj, rel, obj).\n\nRules:\nsubj and obj are copied from the words of the sentence.\nrel is a short verb phrase.\nDo NOT add any fact that is not in the sentence. Do NOT judge whether it is true."
+    ],
+    [
+      "human",
+      "Sentence: The Central Government of India replaced the Mahatma Gandhi National Rural Employment Guarantee Act with a new scheme."
+    ],
+    [
+      "ai",
+      "{{\"triples\": [{{\"subj\": \"The Central Government of India\", \"rel\": \"replaced\", \"obj\": \"the Mahatma Gandhi National Rural Employment Guarantee Act\"}}, {{\"subj\": \"The Central Government of India\", \"rel\": \"introduced\", \"obj\": \"a new scheme\"}}]}}"
+    ],
+    [
+      "human",
+      "Sentence: {sentence}"
+    ]
+  ]
+}

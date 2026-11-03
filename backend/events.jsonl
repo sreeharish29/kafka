@@ -1,0 +1,147 @@
+{"t": 0.0, "type": "run_start", "queries": ["Azam Khan", "Azam Khan Supreme Court", "Azam Khan ED detention Rampur Jail", "Azam Khan moves Supreme Court against ED detention outside Rampur Jail"], "workers": 6}
+{"t": 2.525, "type": "search_start", "job": "newsdata:0", "source": "newsdata", "query": "Azam Khan"}
+{"t": 2.525, "type": "search_start", "job": "mcp:0", "source": "mcp", "query": "Azam Khan"}
+{"t": 2.543, "type": "search_start", "job": "newsdata:1", "source": "newsdata", "query": "Azam Khan Supreme Court"}
+{"t": 2.544, "type": "search_start", "job": "mcp:1", "source": "mcp", "query": "Azam Khan Supreme Court"}
+{"t": 2.544, "type": "search_start", "job": "newsdata:2", "source": "newsdata", "query": "Azam Khan ED detention Rampur Jail"}
+{"t": 2.545, "type": "search_start", "job": "mcp:2", "source": "mcp", "query": "Azam Khan ED detention Rampur Jail"}
+{"t": 3.333, "type": "url_queued", "job": "mcp:0", "url": "https://timesofindia.indiatimes.com/india/azam-the-azam-hain-will-the-khan-factor-help-or-haunt-akhilesh-in-2027-up-elections/articleshow/135462603.cms"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.ndtv.com/india-news/samajwadi-partys-azam-khan-walks-out-of-jail-then-probe-agency-detains-him-12264434"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.thehindu.com/news/national/azam-khan-moves-supreme-court-against-ed-detention-outside-rampur-jail/article71655472.ece"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.hindustantimes.com/cities/lucknow-news/azam-khan-walks-out-of-jail-after-11-months-ed-takes-him-into-custody-within-minutes-101793473046960.html"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.indiatvnews.com/uttar-pradesh/azam-khan-arrested-by-ed-in-jauhar-university-case-sent-to-14-day-judicial-custody-2026-11-01-1058445"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.indiatribune.com/public/index.php/ed-arrests-sp-leader-azam-khan-in-jauhar-university-linked-money-laundering"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.thehindu.com/news/national/uttar-pradesh/ed-detains-sp-leader-azam-khan-from-outside-rampur-jail-as-soon-as-he-comes-out-on-bail/article71650360.ece"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://timesofindia.indiatimes.com/city/lucknow/musalmaan-hone-ki-saza-hai-azam-khan-arrested-minutes-after-release-from-rampur-jail/articleshow/135403296.cms"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.indiatoday.in/india/story/azam-khan-arrest-ed-custody-after-bail-pan-card-money-laundering-case-3029544-2026-10-31"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://indianexpress.com/article/cities/lucknow/ed-arrests-azam-khan-pmla-case-rampur-jail-10945274"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.rediff.com/news/report/azam-khan-university-property-attached-by-ed-under-pmla/20261029.htm"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Nov/01/senior-sp-leader-azam-khan-sents-to-14-day-judicial-custody-in-money-laundering-case"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.deccanchronicle.com/nation/azam-khan-moves-supreme-court-against-ed-arrest-in-money-laundering-case-2001008"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://m.economictimes.com/news/politics-and-nation/sp-leader-azam-khan-challenges-ed-arrest-in-supreme-court-plea-to-be-heard-later-this-week/articleshow/135471978.cms"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://maktoobmedia.com/public/index.php/post?id=116835&slug=azam-khan-sent-to-jail-in-ed-case-amid-islamophobia-political-vendetta-allegations"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://lawbeat.in/top-stories/azam-khan-moves-supreme-court-against-ed-arrest-post-release-in-dual-pan-card-case-1648180"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.etvbharat.com/en/bharat/azam-khan-moves-sc-against-ed-arrest-in-fresh-money-laundering-case-enn26110201820"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://timesofindia.indiatimes.com/city/lucknow/azam-khan-sent-to-14-day-judicial-custody-to-be-lodged-in-dasna-jail-in-ghaziabad/articleshow/135421383.cms"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.hindustantimes.com/india-news/samajwadi-party-leader-azam-khan-detained-by-ed-minutes-after-release-from-rampur-jail-pmla-case-101793455592816.html"}
+{"t": 3.334, "type": "url_queued", "job": "mcp:0", "url": "https://www.rediff.com/news/report/ed-arrests-azam-khan-in-pmla-case-as-he-walks-out-of-jail-on-bail/20261031.htm"}
+{"t": 3.334, "type": "search_done", "job": "mcp:0", "source": "mcp", "query": "Azam Khan", "n_urls": 20, "n_new": 20}
+{"t": 3.334, "type": "search_start", "job": "newsdata:3", "source": "newsdata", "query": "Azam Khan moves Supreme Court against ED detention outside Rampur Jail"}
+{"t": 3.335, "type": "crawl_start", "worker": 0, "url": "https://timesofindia.indiatimes.com/india/azam-the-azam-hain-will-the-khan-factor-help-or-haunt-akhilesh-in-2027-up-elections/articleshow/135462603.cms"}
+{"t": 3.337, "type": "crawl_start", "worker": 1, "url": "https://www.ndtv.com/india-news/samajwadi-partys-azam-khan-walks-out-of-jail-then-probe-agency-detains-him-12264434"}
+{"t": 3.337, "type": "crawl_start", "worker": 2, "url": "https://www.thehindu.com/news/national/azam-khan-moves-supreme-court-against-ed-detention-outside-rampur-jail/article71655472.ece"}
+{"t": 3.337, "type": "crawl_start", "worker": 3, "url": "https://www.hindustantimes.com/cities/lucknow-news/azam-khan-walks-out-of-jail-after-11-months-ed-takes-him-into-custody-within-minutes-101793473046960.html"}
+{"t": 3.338, "type": "crawl_start", "worker": 4, "url": "https://www.indiatvnews.com/uttar-pradesh/azam-khan-arrested-by-ed-in-jauhar-university-case-sent-to-14-day-judicial-custody-2026-11-01-1058445"}
+{"t": 3.338, "type": "crawl_start", "worker": 5, "url": "https://www.indiatribune.com/public/index.php/ed-arrests-sp-leader-azam-khan-in-jauhar-university-linked-money-laundering"}
+{"t": 3.391, "type": "search_error", "job": "newsdata:1", "source": "newsdata", "query": "Azam Khan Supreme Court", "error": "RuntimeError('newsdata HTTP 422')"}
+{"t": 3.392, "type": "search_start", "job": "mcp:3", "source": "mcp", "query": "Azam Khan moves Supreme Court against ED detention outside Rampur Jail"}
+{"t": 3.394, "type": "search_error", "job": "newsdata:0", "source": "newsdata", "query": "Azam Khan", "error": "RuntimeError('newsdata HTTP 422')"}
+{"t": 3.403, "type": "search_error", "job": "newsdata:2", "source": "newsdata", "query": "Azam Khan ED detention Rampur Jail", "error": "RuntimeError('newsdata HTTP 422')"}
+{"t": 3.903, "type": "crawl_done", "worker": 4, "url": "https://www.indiatvnews.com/uttar-pradesh/azam-khan-arrested-by-ed-in-jauhar-university-case-sent-to-14-day-judicial-custody-2026-11-01-1058445", "ok": true, "chars": 6921, "error": null}
+{"t": 3.903, "type": "crawl_start", "worker": 4, "url": "https://www.thehindu.com/news/national/uttar-pradesh/ed-detains-sp-leader-azam-khan-from-outside-rampur-jail-as-soon-as-he-comes-out-on-bail/article71650360.ece"}
+{"t": 4.049, "type": "crawl_done", "worker": 0, "url": "https://timesofindia.indiatimes.com/india/azam-the-azam-hain-will-the-khan-factor-help-or-haunt-akhilesh-in-2027-up-elections/articleshow/135462603.cms", "ok": true, "chars": 20000, "error": null}
+{"t": 4.049, "type": "crawl_start", "worker": 0, "url": "https://timesofindia.indiatimes.com/city/lucknow/musalmaan-hone-ki-saza-hai-azam-khan-arrested-minutes-after-release-from-rampur-jail/articleshow/135403296.cms"}
+{"t": 4.25, "type": "search_error", "job": "newsdata:3", "source": "newsdata", "query": "Azam Khan moves Supreme Court against ED detention outside Rampur Jail", "error": "RuntimeError('newsdata HTTP 422')"}
+{"t": 4.32, "type": "url_queued", "job": "mcp:1", "url": "https://indianexpress.com/article/legal-news/samajwadi-party-azam-khan-money-laundering-supreme-court-fresh-arrest-ed-prison-hearing-this-week-10946886"}
+{"t": 4.32, "type": "url_queued", "job": "mcp:1", "url": "https://muslimmirror.com/supreme-court-to-hear-azam-khans-plea-against-ed-arrest-this-week"}
+{"t": 4.32, "type": "url_queued", "job": "mcp:1", "url": "https://economictimes.indiatimes.com/news/politics-and-nation/sp-leader-azam-khan-moves-supreme-court-challenging-ed-arrest-in-jauhar-trust-money-laundering-case/articleshow/135448356.cms"}
+{"t": 4.32, "type": "url_queued", "job": "mcp:1", "url": "https://www.indiatoday.in/india/law-news/story/azam-khan-ed-arrest-supreme-court-jauhar-trust-money-laundering-case-ptag-3030376-2026-11-02"}
+{"t": 4.32, "type": "url_queued", "job": "mcp:1", "url": "https://www.ndtv.com/india-news/supreme-court-issues-notice-on-azam-khans-plea-challenging-disqualification-3499315"}
+{"t": 4.32, "type": "search_done", "job": "mcp:1", "source": "mcp", "query": "Azam Khan Supreme Court", "n_urls": 20, "n_new": 5}
+{"t": 4.729, "type": "crawl_done", "worker": 3, "url": "https://www.hindustantimes.com/cities/lucknow-news/azam-khan-walks-out-of-jail-after-11-months-ed-takes-him-into-custody-within-minutes-101793473046960.html", "ok": true, "chars": 16947, "error": null}
+{"t": 4.729, "type": "crawl_start", "worker": 3, "url": "https://www.indiatoday.in/india/story/azam-khan-arrest-ed-custody-after-bail-pan-card-money-laundering-case-3029544-2026-10-31"}
+{"t": 4.844, "type": "crawl_done", "worker": 0, "url": "https://timesofindia.indiatimes.com/city/lucknow/musalmaan-hone-ki-saza-hai-azam-khan-arrested-minutes-after-release-from-rampur-jail/articleshow/135403296.cms", "ok": true, "chars": 20000, "error": null}
+{"t": 4.844, "type": "crawl_start", "worker": 0, "url": "https://indianexpress.com/article/cities/lucknow/ed-arrests-azam-khan-pmla-case-rampur-jail-10945274"}
+{"t": 5.339, "type": "crawl_done", "worker": 2, "url": "https://www.thehindu.com/news/national/azam-khan-moves-supreme-court-against-ed-detention-outside-rampur-jail/article71655472.ece", "ok": true, "chars": 5450, "error": null}
+{"t": 5.339, "type": "crawl_start", "worker": 2, "url": "https://www.rediff.com/news/report/azam-khan-university-property-attached-by-ed-under-pmla/20261029.htm"}
+{"t": 5.593, "type": "crawl_done", "worker": 1, "url": "https://www.ndtv.com/india-news/samajwadi-partys-azam-khan-walks-out-of-jail-then-probe-agency-detains-him-12264434", "ok": true, "chars": 4210, "error": null}
+{"t": 5.593, "type": "crawl_start", "worker": 1, "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Nov/01/senior-sp-leader-azam-khan-sents-to-14-day-judicial-custody-in-money-laundering-case"}
+{"t": 5.595, "type": "url_queued", "job": "mcp:2", "url": "https://boldnewsonline.com/ed-arrests-azam-khan-immediately-after-his-release-on-bail-in-pan-fraud-case"}
+{"t": 5.596, "type": "url_queued", "job": "mcp:2", "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Oct/31/sp-leader-azam-khan-taken-into-ed-custody-soon-after-walking-out-of-rampur-jail"}
+{"t": 5.596, "type": "url_queued", "job": "mcp:2", "url": "https://www.millenniumpost.in/nation/punishment-for-being-a-muslim-azam-khan-after-ed-arrests-him-outside-rampur-jail-681684"}
+{"t": 5.596, "type": "url_queued", "job": "mcp:2", "url": "https://www.thestatesman.com/india/azam-khan-moves-supreme-court-against-the-ed-arrest-cji-surya-kant-agrees-to-hear-plea-this-week-1503657925.html"}
+{"t": 5.596, "type": "search_done", "job": "mcp:2", "source": "mcp", "query": "Azam Khan ED detention Rampur Jail", "n_urls": 20, "n_new": 4}
+{"t": 5.679, "type": "crawl_done", "worker": 4, "url": "https://www.thehindu.com/news/national/uttar-pradesh/ed-detains-sp-leader-azam-khan-from-outside-rampur-jail-as-soon-as-he-comes-out-on-bail/article71650360.ece", "ok": true, "chars": 5424, "error": null}
+{"t": 5.679, "type": "crawl_start", "worker": 4, "url": "https://www.deccanchronicle.com/nation/azam-khan-moves-supreme-court-against-ed-arrest-in-money-laundering-case-2001008"}
+{"t": 5.771, "type": "crawl_done", "worker": 3, "url": "https://www.indiatoday.in/india/story/azam-khan-arrest-ed-custody-after-bail-pan-card-money-laundering-case-3029544-2026-10-31", "ok": true, "chars": 4835, "error": null}
+{"t": 5.771, "type": "crawl_start", "worker": 3, "url": "https://m.economictimes.com/news/politics-and-nation/sp-leader-azam-khan-challenges-ed-arrest-in-supreme-court-plea-to-be-heard-later-this-week/articleshow/135471978.cms"}
+{"t": 6.159, "type": "crawl_done", "worker": 0, "url": "https://indianexpress.com/article/cities/lucknow/ed-arrests-azam-khan-pmla-case-rampur-jail-10945274", "ok": true, "chars": 10405, "error": null}
+{"t": 6.159, "type": "crawl_start", "worker": 0, "url": "https://maktoobmedia.com/public/index.php/post?id=116835&slug=azam-khan-sent-to-jail-in-ed-case-amid-islamophobia-political-vendetta-allegations"}
+{"t": 6.456, "type": "crawl_done", "worker": 4, "url": "https://www.deccanchronicle.com/nation/azam-khan-moves-supreme-court-against-ed-arrest-in-money-laundering-case-2001008", "ok": true, "chars": 3892, "error": null}
+{"t": 6.456, "type": "crawl_start", "worker": 4, "url": "https://lawbeat.in/top-stories/azam-khan-moves-supreme-court-against-ed-arrest-post-release-in-dual-pan-card-case-1648180"}
+{"t": 6.662, "type": "crawl_done", "worker": 1, "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Nov/01/senior-sp-leader-azam-khan-sents-to-14-day-judicial-custody-in-money-laundering-case", "ok": true, "chars": 6258, "error": null}
+{"t": 6.662, "type": "crawl_start", "worker": 1, "url": "https://www.etvbharat.com/en/bharat/azam-khan-moves-sc-against-ed-arrest-in-fresh-money-laundering-case-enn26110201820"}
+{"t": 6.79, "type": "url_queued", "job": "mcp:3", "url": "https://www.barandbench.com/news/azam-khan-moves-supreme-court-against-arrest-by-ed-after-release-from-jail"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://courtbook.in/posts/azam-khan-moves-supreme-court-against-ed-arrest-after-release-from-rampur-jail"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/news/national/in-first-high-level-visit-after-new-governments-arrival-foreign-secretary-misri-to-visit-nepal-on-november-4-5/article71657751.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/news/national/actor-nora-fatehi-gets-fresh-summons-in-extortion-case-involving-sukesh-chandrasekhar/article71656550.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/news/national/tamil-nadu/police-expand-search-for-man-escaped-from-custody-in-coimbatore/article71653528.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/news/national/haryana/employees-flag-procedural-gaps-in-haryana-move-to-cancel-power-licence/article71653531.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/videos/shorts/3-aap-mlas-resign-and-join-bjp-bjp-leader-virendra-sachdeva-blames-arvind-kejriwal/article71655746.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://lawtrend.in/azam-khan-moves-supreme-court-against-ed-arrest-following-release-on-bail"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.thehindu.com/sport/paliwal-takes-inspiration-from-dogras-journey/article71657504.ece"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.timesnownews.com/india/supreme-court-gave-justice-sp-leader-azam-khans-son-abdullah-azam-khan-on-bail-order-article-91676533"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.timesnownews.com/india/samajwadi-party-leader-azam-khan-to-be-released-from-sitapur-jail-today-after-supreme-court-grant-interim-bail-article-91676836"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.catchnews.com/national-news/azam-khan-release-after-sc-granted-interim-bail-sp-leader-walks-out-of-sitapur-jail-234194.html"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://news.webindia123.com/news/Articles/India/20220520/3943494.html"}
+{"t": 6.791, "type": "url_queued", "job": "mcp:3", "url": "https://www.indiatvnews.com/topic/azam-khan/6"}
+{"t": 6.791, "type": "search_done", "job": "mcp:3", "source": "mcp", "query": "Azam Khan moves Supreme Court against ED detention outside Rampur Jail", "n_urls": 18, "n_new": 14}
+{"t": 7.33, "type": "crawl_done", "worker": 3, "url": "https://m.economictimes.com/news/politics-and-nation/sp-leader-azam-khan-challenges-ed-arrest-in-supreme-court-plea-to-be-heard-later-this-week/articleshow/135471978.cms", "ok": true, "chars": 8786, "error": null}
+{"t": 7.33, "type": "crawl_start", "worker": 3, "url": "https://timesofindia.indiatimes.com/city/lucknow/azam-khan-sent-to-14-day-judicial-custody-to-be-lodged-in-dasna-jail-in-ghaziabad/articleshow/135421383.cms"}
+{"t": 7.384, "type": "crawl_done", "worker": 5, "url": "https://www.indiatribune.com/public/index.php/ed-arrests-sp-leader-azam-khan-in-jauhar-university-linked-money-laundering", "ok": true, "chars": 8791, "error": null}
+{"t": 7.384, "type": "crawl_start", "worker": 5, "url": "https://www.hindustantimes.com/india-news/samajwadi-party-leader-azam-khan-detained-by-ed-minutes-after-release-from-rampur-jail-pmla-case-101793455592816.html"}
+{"t": 8.512, "type": "crawl_done", "worker": 1, "url": "https://www.etvbharat.com/en/bharat/azam-khan-moves-sc-against-ed-arrest-in-fresh-money-laundering-case-enn26110201820", "ok": true, "chars": 5022, "error": null}
+{"t": 8.512, "type": "crawl_start", "worker": 1, "url": "https://www.rediff.com/news/report/ed-arrests-azam-khan-in-pmla-case-as-he-walks-out-of-jail-on-bail/20261031.htm"}
+{"t": 8.687, "type": "crawl_done", "worker": 5, "url": "https://www.hindustantimes.com/india-news/samajwadi-party-leader-azam-khan-detained-by-ed-minutes-after-release-from-rampur-jail-pmla-case-101793455592816.html", "ok": true, "chars": 15135, "error": null}
+{"t": 8.687, "type": "crawl_start", "worker": 5, "url": "https://indianexpress.com/article/legal-news/samajwadi-party-azam-khan-money-laundering-supreme-court-fresh-arrest-ed-prison-hearing-this-week-10946886"}
+{"t": 9.164, "type": "crawl_done", "worker": 3, "url": "https://timesofindia.indiatimes.com/city/lucknow/azam-khan-sent-to-14-day-judicial-custody-to-be-lodged-in-dasna-jail-in-ghaziabad/articleshow/135421383.cms", "ok": true, "chars": 20000, "error": null}
+{"t": 9.164, "type": "crawl_start", "worker": 3, "url": "https://muslimmirror.com/supreme-court-to-hear-azam-khans-plea-against-ed-arrest-this-week"}
+{"t": 10.032, "type": "crawl_done", "worker": 2, "url": "https://www.rediff.com/news/report/azam-khan-university-property-attached-by-ed-under-pmla/20261029.htm", "ok": true, "chars": 9785, "error": null}
+{"t": 10.032, "type": "crawl_start", "worker": 2, "url": "https://economictimes.indiatimes.com/news/politics-and-nation/sp-leader-azam-khan-moves-supreme-court-challenging-ed-arrest-in-jauhar-trust-money-laundering-case/articleshow/135448356.cms"}
+{"t": 10.085, "type": "crawl_done", "worker": 1, "url": "https://www.rediff.com/news/report/ed-arrests-azam-khan-in-pmla-case-as-he-walks-out-of-jail-on-bail/20261031.htm", "ok": true, "chars": 8624, "error": null}
+{"t": 10.085, "type": "crawl_start", "worker": 1, "url": "https://www.indiatoday.in/india/law-news/story/azam-khan-ed-arrest-supreme-court-jauhar-trust-money-laundering-case-ptag-3030376-2026-11-02"}
+{"t": 10.24, "type": "crawl_done", "worker": 5, "url": "https://indianexpress.com/article/legal-news/samajwadi-party-azam-khan-money-laundering-supreme-court-fresh-arrest-ed-prison-hearing-this-week-10946886", "ok": true, "chars": 8269, "error": null}
+{"t": 10.24, "type": "crawl_start", "worker": 5, "url": "https://www.ndtv.com/india-news/supreme-court-issues-notice-on-azam-khans-plea-challenging-disqualification-3499315"}
+{"t": 10.644, "type": "crawl_done", "worker": 1, "url": "https://www.indiatoday.in/india/law-news/story/azam-khan-ed-arrest-supreme-court-jauhar-trust-money-laundering-case-ptag-3030376-2026-11-02", "ok": true, "chars": 3744, "error": null}
+{"t": 10.644, "type": "crawl_start", "worker": 1, "url": "https://boldnewsonline.com/ed-arrests-azam-khan-immediately-after-his-release-on-bail-in-pan-fraud-case"}
+{"t": 10.826, "type": "crawl_done", "worker": 0, "url": "https://maktoobmedia.com/public/index.php/post?id=116835&slug=azam-khan-sent-to-jail-in-ed-case-amid-islamophobia-political-vendetta-allegations", "ok": true, "chars": 12334, "error": null}
+{"t": 10.826, "type": "crawl_start", "worker": 0, "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Oct/31/sp-leader-azam-khan-taken-into-ed-custody-soon-after-walking-out-of-rampur-jail"}
+{"t": 10.89, "type": "crawl_done", "worker": 4, "url": "https://lawbeat.in/top-stories/azam-khan-moves-supreme-court-against-ed-arrest-post-release-in-dual-pan-card-case-1648180", "ok": true, "chars": 3781, "error": null}
+{"t": 10.89, "type": "crawl_start", "worker": 4, "url": "https://www.millenniumpost.in/nation/punishment-for-being-a-muslim-azam-khan-after-ed-arrests-him-outside-rampur-jail-681684"}
+{"t": 11.034, "type": "crawl_done", "worker": 2, "url": "https://economictimes.indiatimes.com/news/politics-and-nation/sp-leader-azam-khan-moves-supreme-court-challenging-ed-arrest-in-jauhar-trust-money-laundering-case/articleshow/135448356.cms", "ok": true, "chars": 8948, "error": null}
+{"t": 11.034, "type": "crawl_start", "worker": 2, "url": "https://www.thestatesman.com/india/azam-khan-moves-supreme-court-against-the-ed-arrest-cji-surya-kant-agrees-to-hear-plea-this-week-1503657925.html"}
+{"t": 11.355, "type": "crawl_done", "worker": 3, "url": "https://muslimmirror.com/supreme-court-to-hear-azam-khans-plea-against-ed-arrest-this-week", "ok": true, "chars": 17680, "error": null}
+{"t": 11.355, "type": "crawl_start", "worker": 3, "url": "https://www.barandbench.com/news/azam-khan-moves-supreme-court-against-arrest-by-ed-after-release-from-jail"}
+{"t": 11.697, "type": "crawl_done", "worker": 0, "url": "https://www.newindianexpress.com/states/uttar-pradesh/2026/Oct/31/sp-leader-azam-khan-taken-into-ed-custody-soon-after-walking-out-of-rampur-jail", "ok": true, "chars": 5402, "error": null}
+{"t": 11.697, "type": "crawl_start", "worker": 0, "url": "https://courtbook.in/posts/azam-khan-moves-supreme-court-against-ed-arrest-after-release-from-rampur-jail"}
+{"t": 12.092, "type": "crawl_done", "worker": 4, "url": "https://www.millenniumpost.in/nation/punishment-for-being-a-muslim-azam-khan-after-ed-arrests-him-outside-rampur-jail-681684", "ok": true, "chars": 3406, "error": null}
+{"t": 12.092, "type": "crawl_start", "worker": 4, "url": "https://www.thehindu.com/news/national/in-first-high-level-visit-after-new-governments-arrival-foreign-secretary-misri-to-visit-nepal-on-november-4-5/article71657751.ece"}
+{"t": 12.29, "type": "crawl_done", "worker": 2, "url": "https://www.thestatesman.com/india/azam-khan-moves-supreme-court-against-the-ed-arrest-cji-surya-kant-agrees-to-hear-plea-this-week-1503657925.html", "ok": true, "chars": 8655, "error": null}
+{"t": 12.29, "type": "crawl_start", "worker": 2, "url": "https://www.thehindu.com/news/national/actor-nora-fatehi-gets-fresh-summons-in-extortion-case-involving-sukesh-chandrasekhar/article71656550.ece"}
+{"t": 12.475, "type": "crawl_done", "worker": 3, "url": "https://www.barandbench.com/news/azam-khan-moves-supreme-court-against-arrest-by-ed-after-release-from-jail", "ok": true, "chars": 3227, "error": null}
+{"t": 12.475, "type": "crawl_start", "worker": 3, "url": "https://www.thehindu.com/news/national/tamil-nadu/police-expand-search-for-man-escaped-from-custody-in-coimbatore/article71653528.ece"}
+{"t": 12.694, "type": "crawl_done", "worker": 5, "url": "https://www.ndtv.com/india-news/supreme-court-issues-notice-on-azam-khans-plea-challenging-disqualification-3499315", "ok": true, "chars": 2868, "error": null}
+{"t": 12.694, "type": "crawl_start", "worker": 5, "url": "https://www.thehindu.com/news/national/haryana/employees-flag-procedural-gaps-in-haryana-move-to-cancel-power-licence/article71653531.ece"}
+{"t": 12.909, "type": "crawl_done", "worker": 0, "url": "https://courtbook.in/posts/azam-khan-moves-supreme-court-against-ed-arrest-after-release-from-rampur-jail", "ok": true, "chars": 2280, "error": null}
+{"t": 12.909, "type": "crawl_start", "worker": 0, "url": "https://www.thehindu.com/videos/shorts/3-aap-mlas-resign-and-join-bjp-bjp-leader-virendra-sachdeva-blames-arvind-kejriwal/article71655746.ece"}
+{"t": 13.085, "type": "crawl_done", "worker": 1, "url": "https://boldnewsonline.com/ed-arrests-azam-khan-immediately-after-his-release-on-bail-in-pan-fraud-case", "ok": true, "chars": 3304, "error": null}
+{"t": 13.085, "type": "crawl_start", "worker": 1, "url": "https://lawtrend.in/azam-khan-moves-supreme-court-against-ed-arrest-following-release-on-bail"}
+{"t": 13.188, "type": "crawl_done", "worker": 4, "url": "https://www.thehindu.com/news/national/in-first-high-level-visit-after-new-governments-arrival-foreign-secretary-misri-to-visit-nepal-on-november-4-5/article71657751.ece", "ok": true, "chars": 7085, "error": null}
+{"t": 13.188, "type": "crawl_start", "worker": 4, "url": "https://www.thehindu.com/sport/paliwal-takes-inspiration-from-dogras-journey/article71657504.ece"}
+{"t": 13.252, "type": "crawl_done", "worker": 2, "url": "https://www.thehindu.com/news/national/actor-nora-fatehi-gets-fresh-summons-in-extortion-case-involving-sukesh-chandrasekhar/article71656550.ece", "ok": true, "chars": 6397, "error": null}
+{"t": 13.252, "type": "crawl_start", "worker": 2, "url": "https://www.timesnownews.com/india/supreme-court-gave-justice-sp-leader-azam-khans-son-abdullah-azam-khan-on-bail-order-article-91676533"}
+{"t": 13.692, "type": "crawl_done", "worker": 5, "url": "https://www.thehindu.com/news/national/haryana/employees-flag-procedural-gaps-in-haryana-move-to-cancel-power-licence/article71653531.ece", "ok": true, "chars": 5814, "error": null}
+{"t": 13.692, "type": "crawl_start", "worker": 5, "url": "https://www.timesnownews.com/india/samajwadi-party-leader-azam-khan-to-be-released-from-sitapur-jail-today-after-supreme-court-grant-interim-bail-article-91676836"}
+{"t": 13.759, "type": "crawl_done", "worker": 3, "url": "https://www.thehindu.com/news/national/tamil-nadu/police-expand-search-for-man-escaped-from-custody-in-coimbatore/article71653528.ece", "ok": true, "chars": 5010, "error": null}
+{"t": 13.759, "type": "crawl_start", "worker": 3, "url": "https://www.catchnews.com/national-news/azam-khan-release-after-sc-granted-interim-bail-sp-leader-walks-out-of-sitapur-jail-234194.html"}
+{"t": 13.844, "type": "crawl_done", "worker": 0, "url": "https://www.thehindu.com/videos/shorts/3-aap-mlas-resign-and-join-bjp-bjp-leader-virendra-sachdeva-blames-arvind-kejriwal/article71655746.ece", "ok": true, "chars": 2787, "error": null}
+{"t": 13.844, "type": "crawl_start", "worker": 0, "url": "https://news.webindia123.com/news/Articles/India/20220520/3943494.html"}
+{"t": 14.168, "type": "crawl_done", "worker": 4, "url": "https://www.thehindu.com/sport/paliwal-takes-inspiration-from-dogras-journey/article71657504.ece", "ok": true, "chars": 4418, "error": null}
+{"t": 14.168, "type": "crawl_start", "worker": 4, "url": "https://www.indiatvnews.com/topic/azam-khan/6"}
+{"t": 14.423, "type": "crawl_done", "worker": 1, "url": "https://lawtrend.in/azam-khan-moves-supreme-court-against-ed-arrest-following-release-on-bail", "ok": true, "chars": 12724, "error": null}
+{"t": 14.602, "type": "crawl_done", "worker": 4, "url": "https://www.indiatvnews.com/topic/azam-khan/6", "ok": true, "chars": 10925, "error": null}
+{"t": 14.656, "type": "crawl_done", "worker": 2, "url": "https://www.timesnownews.com/india/supreme-court-gave-justice-sp-leader-azam-khans-son-abdullah-azam-khan-on-bail-order-article-91676533", "ok": true, "chars": 6179, "error": null}
+{"t": 14.728, "type": "crawl_done", "worker": 5, "url": "https://www.timesnownews.com/india/samajwadi-party-leader-azam-khan-to-be-released-from-sitapur-jail-today-after-supreme-court-grant-interim-bail-article-91676836", "ok": true, "chars": 7237, "error": null}
+{"t": 16.126, "type": "crawl_done", "worker": 3, "url": "https://www.catchnews.com/national-news/azam-khan-release-after-sc-granted-interim-bail-sp-leader-walks-out-of-sitapur-jail-234194.html", "ok": true, "chars": 7222, "error": null}
+{"t": 16.802, "type": "crawl_done", "worker": 0, "url": "https://news.webindia123.com/news/Articles/India/20220520/3943494.html", "ok": true, "chars": 9561, "error": null}
+{"t": 16.872, "type": "finished", "total": 43, "ok": 43}

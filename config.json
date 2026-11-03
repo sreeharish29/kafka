@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "rag-memory": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "http://localhost:8765/mcp"]
+    }
+  }
+}
