@@ -1,0 +1,651 @@
+
+.workspace {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #090c13;
+  color: #f2eff8;
+  font-family: inherit;
+}
+
+/* Full-screen graph */
+
+.graphLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #090c13;
+}
+
+.graphLoading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #b9a2d6;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  background: #090c13;
+}
+
+/* Ambient background lighting */
+
+.ambientGlow {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 48% 45%,
+      rgba(71, 94, 173, 0.055),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(125, 72, 177, 0.035),
+      transparent 50%
+    );
+}
+
+.vignette {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.23),
+    inset 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Top HUD */
+
+.topBar {
+  position: absolute;
+  z-index: 10;
+  top: 12px;
+  left: 16px;
+  right: 16px;
+
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 0 12px;
+  border: 1px solid rgba(151, 133, 184, 0.2);
+  border-radius: 10px;
+
+  background: rgba(13, 16, 27, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.topLeft {
+  min-width: 0;
+}
+
+.stageLabel {
+  color: #d9c3f1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+.stageLabel span {
+  color: #71617f;
+  padding: 0 3px;
+}
+
+.topCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+}
+
+.statusRunning {
+  background: #bd83f3;
+  box-shadow: 0 0 12px rgba(189, 131, 243, 0.85);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.statusCompleted {
+  background: #55d6b0;
+  box-shadow: 0 0 10px rgba(85, 214, 176, 0.5);
+}
+
+.statusFailed {
+  background: #ff7187;
+  box-shadow: 0 0 10px rgba(255, 113, 135, 0.5);
+}
+
+.statusText {
+  color: #bdc2d1;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.newInvestigation {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 34px;
+  padding: 0 13px;
+
+  border: 1px solid rgba(179, 136, 235, 0.35);
+  border-radius: 7px;
+
+  background: rgba(179, 136, 235, 0.1);
+  color: #e6d6f9;
+
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.newInvestigation span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.newInvestigation:hover {
+  background: rgba(179, 136, 235, 0.2);
+  border-color: rgba(179, 136, 235, 0.65);
+  box-shadow: 0 0 18px rgba(179, 136, 235, 0.13);
+  transform: translateY(-1px);
+}
+
+/* Floating glass panels */
+
+.panel {
+  position: absolute;
+  z-index: 8;
+
+  border: 1px solid rgba(164, 137, 201, 0.23);
+  border-radius: 15px;
+
+  background: rgba(11, 12, 22, 0.83);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 14px 45px rgba(0, 0, 0, 0.24),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.claimPanel {
+  top: 76px;
+  left: 20px;
+  width: 300px;
+  max-height: calc(100dvh - 150px);
+  overflow-y: auto;
+  padding: 18px 17px;
+}
+
+.memoryPanel {
+  top: 76px;
+  right: 20px;
+  bottom: 48px;
+  width: 330px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  padding: 18px 16px;
+}
+
+/* Panel headings */
+
+.panelHeading {
+  color: #a995bd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1.5;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 15px;
+}
+
+.memoryCount {
+  color: #8b7c9c;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+/* Claim */
+
+.claimText {
+  margin: 12px 0 18px;
+  color: #eeeaf4;
+  font-size: 13px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.sectionDivider {
+  height: 1px;
+  margin: 0 0 17px;
+  background: rgba(177, 155, 204, 0.13);
+}
+
+/* Status and statistics */
+
+.statusBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 13px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 17px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  color: #777986;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.statValue {
+  color: #f1edf5;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.sessionId {
+  color: #bdb1ce;
+  font-family: monospace;
+  font-size: 10px;
+  word-break: break-all;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  margin-top: 13px;
+  border-radius: 10px;
+  background: rgba(179, 136, 235, 0.12);
+}
+
+.progressBar {
+  width: 35%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    #8656bd,
+    #c59af1,
+    #6b8dff
+  );
+  box-shadow: 0 0 12px rgba(179, 136, 235, 0.5);
+  animation: progress 2.4s ease-in-out infinite;
+}
+
+.errorMessage {
+  margin-top: 13px;
+  padding: 10px;
+  border: 1px solid rgba(255, 113, 135, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 113, 135, 0.06);
+  color: #ff9cab;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Retrieved memory */
+
+.memoryList {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding-right: 3px;
+}
+
+.memoryCard {
+  padding: 13px 12px;
+  border: 1px solid rgba(173, 139, 207, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.memoryCard:hover {
+  border-color: rgba(179, 136, 235, 0.42);
+  background: rgba(179, 136, 235, 0.045);
+}
+
+.entityHeader {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.entityIndicator {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #b388eb;
+  box-shadow: 0 0 9px rgba(179, 136, 235, 0.55);
+}
+
+.entityName {
+  margin: 0;
+  color: #f0eaf7;
+  font-size: 12px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.factList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding-left: 16px;
+
+  color: #c7c4ce;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.factList li {
+  padding-left: 1px;
+  overflow-wrap: anywhere;
+}
+
+.sourceInfo {
+  margin-top: 9px;
+  color: #85818f;
+  font-size: 10px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.sourceInfo span {
+  color: #a49aaa;
+}
+
+/* Empty and loading states */
+
+.emptyState {
+  flex: 1;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.emptyState p {
+  margin: 12px 0 5px;
+  color: #d5cce1;
+  font-size: 12px;
+}
+
+.emptyState span {
+  color: #777986;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.loadingOrb {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(179, 136, 235, 0.2);
+  border-top-color: #bd83f3;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.emptyState .errorText {
+  color: #ff9cab;
+}
+
+/* Bottom graph information */
+
+.graphHint {
+  position: absolute;
+  z-index: 7;
+  left: 21px;
+  bottom: 13px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #85899a;
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.hintDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4f9dff;
+  box-shadow: 0 0 8px rgba(79, 157, 255, 0.65);
+}
+
+.hintSeparator {
+  color: #625c6c;
+}
+
+.graphMeta {
+  position: absolute;
+  z-index: 7;
+  right: 20px;
+  bottom: 13px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #88899b;
+  font-size: 10px;
+  pointer-events: none;
+}
+
+/* Scrollbars */
+
+.claimPanel::-webkit-scrollbar,
+.memoryList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.claimPanel::-webkit-scrollbar-track,
+.memoryList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.claimPanel::-webkit-scrollbar-thumb,
+.memoryList::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(179, 136, 235, 0.25);
+}
+
+/* Animations */
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 11px rgba(189, 131, 243, 0.8);
+  }
+
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 3px rgba(189, 131, 243, 0.25);
+  }
+}
+
+@keyframes progress {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(310%);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+  .claimPanel {
+    width: 255px;
+  }
+
+  .memoryPanel {
+    width: 285px;
+  }
+  
+}
+
+@media (max-width: 650px) {
+  .workspace {
+    min-height: 700px;
+  }
+    .topActions {
+    gap: 5px;
+    }
+
+    .stageNavigation {
+    height: 30px;
+    padding: 0 7px;
+    font-size: 9px;
+    }
+
+    .stageNavigation span:nth-child(2) {
+    display: none;
+    }
+
+  .topBar {
+    left: 9px;
+    right: 9px;
+    top: 9px;
+    min-height: 44px;
+    grid-template-columns: 1fr auto;
+  }
+
+  .topCenter {
+    display: none;
+  }
+
+  .stageLabel {
+    font-size: 9px;
+  }
+
+  .newInvestigation {
+    height: 30px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .claimPanel {
+    top: 65px;
+    left: 10px;
+    width: calc(50% - 15px);
+    max-height: 38dvh;
+    padding: 12px;
+  }
+
+  .memoryPanel {
+    top: 65px;
+    right: 10px;
+    bottom: 45px;
+    width: calc(50% - 15px);
+    padding: 12px;
+  }
+
+  .panelHeading {
+    font-size: 9px;
+  }
+
+  .claimText {
+    font-size: 11px;
+  }
+
+  .statValue {
+    font-size: 10px;
+  }
+
+  .graphHint {
+    left: 12px;
+    bottom: 12px;
+    font-size: 9px;
+  }
+
+  .graphMeta {
+    right: 12px;
+    bottom: 12px;
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusRunning,
+  .progressBar,
+  .loadingOrb {
+    animation: none;
+  }
+}

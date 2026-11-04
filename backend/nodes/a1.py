@@ -88,12 +88,73 @@ def load_prompt() -> ChatPromptTemplate:
     return ChatPromptTemplate.from_messages([(m["role"], m["template"]) for m in spec["messages"]])
 
 
+
 def branch(name: str, label: str, retrieve, judge):
-    async def fetch(inp: dict) -> dict:
-        return {"query": inp["query"], "source": label, "retrieved": await retrieve(inp["query"])}
+    async def fetch_and_judge(inp: dict) -> dict:
+        retrieved = await retrieve(inp["query"])
 
-    return (RunnableLambda(fetch) | judge).with_config(run_name=f"a1_{name}", tags=["stage_a", "a1", name])
+        check = await judge.ainvoke({
+            "query": inp["query"],
+            "source": label,
+            "retrieved": retrieved,
+        })
 
+        return {
+            "retrieved": retrieved,
+            "check": check,
+        }
+
+    return RunnableLambda(fetch_and_judge).with_config(
+        run_name=f"a1_{name}",
+        tags=["stage_a", "a1", name],
+    )
+
+
+import json
+
+
+def parse_qdrant_chunks(raw_result):
+    """
+    Convert the MCP memory_search response into individual
+    Qdrant result objects without losing their original fields.
+    """
+    if isinstance(raw_result, list):
+        text_blocks = [
+            item.get("text", "")
+            for item in raw_result
+            if isinstance(item, dict) and item.get("type") == "text"
+        ]
+        raw_text = "\n".join(text_blocks)
+    elif isinstance(raw_result, dict):
+        raw_text = raw_result.get("text", "")
+    else:
+        raw_text = str(raw_result)
+
+    if not raw_text.strip():
+        return []
+
+    try:
+        payload = json.loads(raw_text)
+    except json.JSONDecodeError:
+        return []
+
+    results = payload.get("results", [])
+
+    if not isinstance(results, list):
+        return []
+
+    return [
+        {
+            "chunk_id": item.get("chunk_id"),
+            "text": item.get("text", ""),
+            "source": item.get("source"),
+            "created_at": item.get("created_at"),
+            "metadata": item.get("metadata", {}),
+            "score": item.get("score"),
+        }
+        for item in results
+        if isinstance(item, dict)
+    ]
 
 llm = ChatOllama(model="gemma4:e2b", base_url=OLLAMA_URL, temperature=0)
 judge = load_prompt() | llm.with_structured_output(DBCheck, method="json_schema")
@@ -106,21 +167,50 @@ parallel = RunnableParallel(
 
 
 # ---------- node ----------
+
 async def run(state, config: RunnableConfig = None) -> dict:
     TOOLS.update(await load_tools())
-    checks = await parallel.ainvoke({"query": state.query}, config)
+
+    checks = await parallel.ainvoke(
+        {"query": state.query},
+        config,
+    )
 
     memory = dict(state.memory)
     found = False
-    for source, check in checks.items():
+
+    # Preserve individual Qdrant results for frontend display.
+    qdrant_raw = checks["qdrant"]["retrieved"]
+    retrieved_chunks = parse_qdrant_chunks(
+        # Re-fetching is NOT required.
+        # This value is the serialized text from memory_search.
+        # The helper accepts the same JSON string.
+        [{"type": "text", "text": qdrant_raw}]
+    )
+
+    # Preserve the existing structured memory merging.
+    for source, result in checks.items():
+        check = result["check"]
+
         if check.already_present_in_db != "yes":
             continue
-        for m in check.matches:
+
+        for match in check.matches:
             found = True
-            entry = memory.setdefault(m.entity, {"facts": [], "sources": []})
-            if m.fact not in entry["facts"]:
-                entry["facts"].append(m.fact)
+
+            entry = memory.setdefault(
+                match.entity,
+                {"facts": [], "sources": []},
+            )
+
+            if match.fact not in entry["facts"]:
+                entry["facts"].append(match.fact)
+
             if source not in entry["sources"]:
                 entry["sources"].append(source)
 
-    return {"already_present_in_db": "yes" if found else "no", "memory": memory}
+    return {
+        "already_present_in_db": "yes" if found else "no",
+        "memory": memory,
+        "retrieved_chunks": retrieved_chunks,
+    }

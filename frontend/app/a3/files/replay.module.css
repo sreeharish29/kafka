@@ -1,0 +1,691 @@
+/* =====================================================================
+   replay.module.css — x axis is time, y axis is rows (search jobs, then
+   the 6 crawl workers).
+
+   Layer stack inside .inner (bottom -> top):
+     0 .canvasLayer   R3F canvas (wires, particles, bloom)
+     1 .rowBg/.laneBg row stripes
+     2 .gutter        row labels
+     3 .view          clips the scrolling .world (ticks, gaps, boxes)
+                      and holds the fixed .playhead
+
+   .world is moved with translateX every frame. Box geometry is pure CSS:
+     left   = --s * --pps
+     width  = --d * --pps          (finished)
+            = (--tau - --s) * --pps (still running, grows live)
+   --s and --d are in display seconds, --pps is pixels per second.
+   ===================================================================== */
+
+@property --a3-fill {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --a3-tail {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.1;
+}
+
+.page {
+  --bg: #05060a;
+  --ink: #ecebf0;
+  --ink-dim: rgba(236, 235, 240, 0.6);
+  --ink-faint: rgba(236, 235, 240, 0.34);
+  --line: rgba(255, 255, 255, 0.08);
+  --green: 45, 255, 143;
+  --red: 255, 59, 78;
+  --cyan: 76, 201, 255;
+  --t-charge: 650ms;
+
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--bg);
+}
+
+/* ------------------------------------------------------------------ bar */
+
+.bar {
+  flex: none;
+  padding: 12px 20px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.barTop,
+.barBottom {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.barBottom {
+  margin-top: 10px;
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.src {
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.btn,
+.segBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 11px;
+  color: var(--ink-dim);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease;
+}
+
+.btn:hover,
+.segBtn:hover {
+  color: var(--ink);
+  border-color: rgba(var(--cyan), 0.5);
+}
+
+.btn:focus-visible,
+.segBtn:focus-visible {
+  outline: 2px solid rgba(var(--cyan), 0.9);
+  outline-offset: 2px;
+}
+
+.btn[aria-pressed='true'],
+.segBtn[aria-pressed='true'] {
+  color: rgb(var(--cyan));
+  border-color: rgba(var(--cyan), 0.55);
+  background: rgba(var(--cyan), 0.09);
+}
+
+.seg {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.segBtn {
+  padding: 5px 9px;
+  border-radius: 8px;
+}
+
+.zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.zoom input,
+.scrub {
+  accent-color: rgb(var(--cyan));
+}
+
+.clockTxt {
+  flex: none;
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.clockTxt b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.scrub {
+  flex: 1;
+  min-width: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 14px;
+  flex: none;
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.stats [data-k='run'] {
+  color: rgb(var(--cyan));
+}
+.stats [data-k='ok'] {
+  color: rgb(var(--green));
+}
+.stats [data-k='fail'] {
+  color: rgb(var(--red));
+}
+
+/* ------------------------------------------------------------- timeline */
+
+.timeline {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+}
+
+.canvasLayer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.rowBg,
+.laneBg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.035);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+}
+
+.laneBg {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--bg) 70%, transparent);
+}
+
+.gl {
+  position: absolute;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+.view {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  will-change: transform;
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--s) * var(--pps) * 1px);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+.tick span {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  font-size: 9px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.gap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--s) * var(--pps) * 1px);
+  width: calc(var(--d) * var(--pps) * 1px);
+  pointer-events: none;
+  border-left: 1px dashed rgba(255, 255, 255, 0.2);
+  border-right: 1px dashed rgba(255, 255, 255, 0.2);
+  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 6px, transparent 6px 12px);
+}
+
+.gap span {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 1px 6px;
+  font-size: 9px;
+  white-space: nowrap;
+  color: var(--ink-dim);
+  border-radius: 4px;
+  background: var(--bg);
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  background: rgba(var(--cyan), 0.85);
+  box-shadow: 0 0 10px rgba(var(--cyan), 0.7);
+}
+
+/* ------------------------------------------------------------------ box */
+
+.box {
+  --tone: var(--green);
+  --a3-fill: 0%;
+  --a3-tail: 0.1;
+
+  position: absolute;
+  top: var(--y);
+  left: calc(var(--s) * var(--pps) * 1px);
+  width: max(8px, calc(var(--d) * var(--pps) * 1px));
+  height: var(--h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  appearance: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 70%), rgba(8, 10, 14, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  transition:
+    box-shadow 600ms ease,
+    border-color 600ms ease,
+    background 600ms ease;
+}
+
+button.box {
+  cursor: pointer;
+}
+
+.box[data-run='true'] {
+  width: max(8px, calc((var(--tau) - var(--s)) * var(--pps) * 1px));
+}
+
+.box[data-tone='red'] {
+  --tone: var(--red);
+}
+.box[data-tone='cyan'] {
+  --tone: var(--cyan);
+}
+.box[data-tone='green'] {
+  --tone: var(--green);
+}
+
+.box:hover {
+  border-color: rgba(var(--tone), 0.5);
+}
+
+.box:focus-visible {
+  outline: 2px solid rgba(var(--tone), 0.9);
+  outline-offset: 2px;
+}
+
+/* edge ring that draws once around the perimeter */
+.box::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from -90deg at 50% 50%,
+    rgba(var(--tone), var(--a3-tail)) 0%,
+    rgba(var(--tone), 1) var(--a3-fill),
+    transparent calc(var(--a3-fill) + 3%)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(var(--tone), 0.95));
+  opacity: 0;
+}
+
+.box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    inset 0 0 16px 1px rgba(var(--tone), 0.5),
+    inset 0 0 44px rgba(var(--tone), 0.14);
+}
+
+.box[data-state='charging'] {
+  border-color: rgba(var(--tone), 0.4);
+}
+
+.box[data-state='charging']::before {
+  opacity: 1;
+  animation: ringDraw var(--t-charge) cubic-bezier(0.55, 0.05, 0.25, 1) forwards;
+}
+
+.box[data-state='charging']::after {
+  opacity: 0.55;
+}
+
+.box[data-state='lit'] {
+  --a3-fill: 100%;
+  --a3-tail: 0.9;
+  border-color: rgba(var(--tone), 0.5);
+  background: linear-gradient(150deg, rgba(var(--tone), 0.14) 0%, rgba(var(--tone), 0.02) 70%), rgba(8, 10, 14, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(var(--tone), 0.22);
+}
+
+.box[data-state='lit']::before {
+  opacity: 0.9;
+}
+
+.box[data-state='lit']::after {
+  opacity: 0.8;
+}
+
+.box[data-sel='true'] {
+  border-color: rgba(var(--tone), 0.95);
+  box-shadow:
+    0 0 0 2px rgba(var(--tone), 0.5),
+    0 0 30px rgba(var(--tone), 0.4);
+}
+
+/* ---------------------------------------------------------- box content */
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 9px;
+  white-space: nowrap;
+  color: var(--ink-faint);
+}
+
+.head i {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--tone));
+}
+
+.label {
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sub {
+  overflow: hidden;
+  font-size: 9px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-dim);
+}
+
+.box[data-kind='job'] {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+
+.jobTxt,
+.jobRes {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.jobTxt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jobRes {
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.jobRes i {
+  font-style: normal;
+  color: rgb(var(--tone));
+}
+
+/* --------------------------------------------------------------- drawer */
+
+.drawer {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr 0.8fr;
+  gap: 12px;
+  flex: none;
+  height: 190px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.panel {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.panelTitle {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-dim);
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 10px;
+}
+
+.log li {
+  display: grid;
+  grid-template-columns: 46px 88px 1fr;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.log li > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logT {
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.log [data-type='crawl_start'] .logType,
+.log [data-type='search_start'] .logType {
+  color: rgb(var(--cyan));
+}
+.log [data-type='crawl_done'] .logType,
+.log [data-type='search_done'] .logType {
+  color: rgb(var(--green));
+}
+.log [data-type='search_error'] .logType {
+  color: rgb(var(--red));
+}
+
+.logArg {
+  color: var(--ink-dim);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail p {
+  margin: 0;
+}
+
+.detailTitle {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.detailUrl {
+  overflow: hidden;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-faint);
+}
+
+.detailMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.detailMeta [data-k='ok'] {
+  color: rgb(var(--green));
+}
+.detailMeta [data-k='fail'] {
+  color: rgb(var(--red));
+}
+.detailMeta [data-k='run'] {
+  color: rgb(var(--cyan));
+}
+
+.detailErr {
+  font-size: 10px;
+  color: rgb(var(--red));
+}
+
+.preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+.empty {
+  margin: 0;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.run {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  margin: 0;
+  font-size: 10px;
+}
+
+.run dt {
+  color: var(--ink-faint);
+}
+
+.run dd {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-dim);
+}
+
+@keyframes ringDraw {
+  from {
+    --a3-fill: 0%;
+    --a3-tail: 0.1;
+  }
+  to {
+    --a3-fill: 100%;
+    --a3-tail: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    transition-duration: 1ms;
+  }
+  .box[data-state='charging']::before {
+    animation-duration: 1ms;
+  }
+}

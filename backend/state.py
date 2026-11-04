@@ -5,7 +5,10 @@ from operator import add
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
+import contextvars
 
+# Add this somewhere near the top of state.py
+crawl_event_queue = contextvars.ContextVar("crawl_event_queue", default=None)
 
 class Entity(BaseModel):
     mention: str                      # "India's richest man"
@@ -38,6 +41,7 @@ class StageAState(BaseModel):
     # ---- A1
     memory: dict = Field(default_factory=dict)        # entity map (JSON/YAML), not prose
     already_present_in_db: Literal["yes", "no"] = "no"
+    retrieved_chunks: list[dict] = Field(default_factory=list)
 
     # ---- A2 (not used by A3)
     intent: Literal["challenging", "neutral", "evaluative"] | None = None

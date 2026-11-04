@@ -377,8 +377,8 @@ async def make_queries(state: StageAState) -> dict:
     sentence = state.given_sentence or state.query
     base = {"a3_run_id": state.a3_run_id or uuid.uuid4().hex[:12], "given_sentence": sentence,
             "clarification": "", "chunk_ids": [], "entities": [], "triples": [], "a3_unresolved": []}
-    if state.already_present_in_db == "yes":
-        return {**base, "a3_skipped_crawl": True, "a3_skip_reason": "already_in_db", "a3_queries": []}
+    # if state.already_present_in_db == "yes":
+    #     return {**base, "a3_skipped_crawl": True, "a3_skip_reason": "already_in_db", "a3_queries": []}
     try:
         out = await ask("queries", QueryList, memory=memory_text(state.memory),
                         sentence=sentence, n=LIM["max_queries"])
@@ -391,9 +391,28 @@ async def make_queries(state: StageAState) -> dict:
 
 async def crawl(state: StageAState) -> dict:
     try:
-        res = run_pipeline(state.a3_queries)
+        # Import the queue and the Emitter
+        from backend.state import crawl_event_queue
+        from backend.helper.search_fetch import Emitter, run_pipeline
+        import inspect
+        
+        # 1. Safely grab the queue set by FastAPI
+        try:
+            q = crawl_event_queue.get()
+        except LookupError:
+            q = None
+            
+        # 2. Wire the emitter to push directly into the queue
+        emitter = None
+        if q is not None:
+            emitter = Emitter(sinks=[lambda ev: q.put_nowait(ev)])
+            
+        # 3. CRITICAL: Pass emit=emitter into run_pipeline
+        res = run_pipeline(state.a3_queries, emit=emitter)
+        
         return {"a3_articles": (await res if inspect.isawaitable(res) else res) or {}}
     except Exception as e:
+        from backend.nodes.a3 import root_cause # adjust import if needed
         return {"a3_articles": {}, "errors": [f"A3.crawl: {root_cause(e)}"]}
 
 

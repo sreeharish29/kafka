@@ -1,0 +1,608 @@
+/* =====================================================================
+   a3.module.css — grid of boxes + routed glowing wires
+   ---------------------------------------------------------------------
+   Layer stack inside .board (bottom -> top):
+     0  .canvasLayer   R3F canvas (wires + bloom)
+     1  .grid          faint engineering grid
+     2  .lane / .slot  grid overlay (wire channels + empty cells), toggled
+     2  .scan          scanlines
+     3  .vignette      edge darkening
+     4  .node          glass boxes (HTML buttons)
+     5  .port          attach dots on box edges
+
+   Single source of truth for sizes lives in grid.ts / page.tsx and is
+   injected as inline CSS variables on .stage:
+     --board-w --board-h --box-w --box-h --t-charge --snap --fit
+   Per-node inline inputs:  --x --y   (top-left of the box, board px)
+   Per-node attributes:
+     data-state    idle | charging | lit
+     data-selected true while it is the chosen source
+     data-ports    which edges have a wire attached: "t r b l"
+     data-tone     (omit = green) | red
+   ===================================================================== */
+
+@property --a3-fill {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --a3-tail {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.1;
+}
+
+/* ---------------------------------------------------------------- stage */
+
+.stage {
+  --bg: #04060a;
+  --ink: #e6f0ea;
+  --ink-dim: rgba(230, 240, 234, 0.58);
+  --ink-faint: rgba(230, 240, 234, 0.3);
+  --line: rgba(255, 255, 255, 0.07);
+  --green: 45, 255, 143; /* rgb triplets: rgba(var(--green), .4) */
+  --red: 255, 59, 78;
+
+  /* fallbacks, overridden inline from page.tsx */
+  --board-w: 1150px;
+  --board-h: 610px;
+  --box-w: 200px;
+  --box-h: 110px;
+  --snap: 5px;
+  --radius: 16px;
+  --t-charge: 750ms;
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  background:
+    radial-gradient(1100px 560px at 50% 45%, #0a1410 0%, transparent 70%),
+    var(--bg);
+}
+
+/* ------------------------------------------------------------------ HUD */
+
+.hud {
+  position: absolute;
+  inset: 22px 28px auto 28px;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.hudTitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.hudSub {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.hudActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.hudBtn,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 11px;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+}
+
+.hudBtn {
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease;
+}
+
+.hudBtn:hover {
+  color: var(--ink);
+  border-color: rgba(var(--green), 0.45);
+}
+
+.hudBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.hudBtn[aria-pressed='true'] {
+  color: rgb(var(--green));
+  border-color: rgba(var(--green), 0.5);
+  background: rgba(var(--green), 0.08);
+}
+
+.hudBtn:focus-visible {
+  outline: 2px solid rgba(var(--green), 0.8);
+  outline-offset: 2px;
+}
+
+.chipDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  transition:
+    background 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.chip[data-phase='armed'] .chipDot,
+.chip[data-phase='grow'] .chipDot {
+  background: rgb(var(--green));
+  box-shadow: 0 0 10px rgba(var(--green), 0.9);
+  animation: dotPulse 700ms ease-in-out infinite;
+}
+
+.hint {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  z-index: 10;
+  translate: -50% 0;
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -0.12em;
+  background: var(--ink-dim);
+  animation: blink 1.1s steps(1) infinite;
+}
+
+/* ---------------------------------------------------------------- board */
+
+.board {
+  position: relative;
+  width: var(--board-w);
+  height: var(--board-h);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  /* --fit shrinks the board on small screens. The canvas measures its
+     offset size, so world units stay equal to CSS pixels. */
+  transform: scale(var(--fit, 1));
+  transform-origin: center;
+}
+
+.canvasLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, #000 25%, transparent 80%);
+}
+
+/* grid overlay: dashed centre line of every wire channel + empty cells */
+.lane,
+.slot {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.board[data-grid='true'] .lane,
+.board[data-grid='true'] .slot {
+  opacity: 1;
+}
+
+.laneH {
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed rgba(var(--green), 0.22);
+}
+
+.laneV {
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed rgba(var(--green), 0.22);
+}
+
+.slot {
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.slotLabel {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+.scan {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.022) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* ----------------------------------------------------------------- node */
+
+.node {
+  --tone: var(--green); /* "r, g, b" triplet; swapped by data-tone */
+  --a3-fill: 0%;
+  --a3-tail: 0.1;
+
+  position: absolute;
+  z-index: 4;
+  left: var(--x);
+  top: var(--y);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: var(--box-w);
+  height: var(--box-h);
+  padding: 14px 16px;
+  box-sizing: border-box;
+
+  /* button reset */
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  appearance: none;
+  cursor: pointer;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.075) 0%,
+    rgba(255, 255, 255, 0.018) 60%
+  );
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.45);
+  transition:
+    box-shadow 650ms ease,
+    border-color 650ms ease,
+    background 650ms ease;
+}
+
+.node[data-tone='red'] {
+  --tone: var(--red);
+}
+
+.node:hover {
+  border-color: rgba(var(--tone), 0.4);
+}
+
+.node:focus-visible {
+  outline: 2px solid rgba(var(--tone), 0.8);
+  outline-offset: 4px;
+}
+
+/* Edge ring: border-only layer; its conic gradient is "drawn" around
+   the perimeter by animating --a3-fill from 0% to 100%. */
+.node::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from -90deg at 50% 50%,
+    rgba(var(--tone), var(--a3-tail)) 0%,
+    rgba(var(--tone), 1) var(--a3-fill),
+    transparent calc(var(--a3-fill) + 3%)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 6px rgba(var(--tone), 0.95));
+  opacity: 0;
+}
+
+/* Inner edge glow: light bleeding inward from the border. */
+.node::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    inset 0 0 22px 2px rgba(var(--tone), 0.5),
+    inset 0 0 64px rgba(var(--tone), 0.16);
+  transition: opacity 650ms ease;
+}
+
+/* idle -> charging: ring draws around the edge */
+.node[data-state='charging'] {
+  border-color: rgba(var(--tone), 0.35);
+}
+
+.node[data-state='charging']::before {
+  opacity: 1;
+  animation: ringDraw var(--t-charge) cubic-bezier(0.55, 0.05, 0.25, 1) forwards;
+}
+
+.node[data-state='charging']::after {
+  opacity: 0.55;
+  transition-duration: var(--t-charge);
+}
+
+/* charging -> lit: closed ring, outer halo, breathing inner glow */
+.node[data-state='lit'] {
+  --a3-fill: 100%;
+  --a3-tail: 0.9;
+  border-color: rgba(var(--tone), 0.5);
+  background: linear-gradient(
+    150deg,
+    rgba(var(--tone), 0.12) 0%,
+    rgba(var(--tone), 0.025) 60%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(var(--tone), 0.25),
+    0 0 36px rgba(var(--tone), 0.3),
+    0 0 100px rgba(var(--tone), 0.12);
+}
+
+.node[data-state='lit']::before {
+  opacity: 1;
+}
+
+.node[data-state='lit']::after {
+  opacity: 1;
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+/* the box you picked as the wire's source */
+.node[data-selected='true'] {
+  border-color: rgba(var(--tone), 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 2px rgba(var(--tone), 0.55),
+    0 0 44px rgba(var(--tone), 0.45),
+    0 0 110px rgba(var(--tone), 0.2);
+}
+
+/* ----------------------------------------------------------- node content */
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition:
+    background 500ms ease,
+    box-shadow 500ms ease;
+}
+
+.node[data-state='charging'] .led,
+.node[data-state='lit'] .led {
+  background: rgb(var(--tone));
+  box-shadow: 0 0 12px rgba(var(--tone), 0.95);
+}
+
+.label {
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+/* -------------------------------------------------------------- ports
+   Dots on the box edge where a wire attaches. Top/bottom dots are nudged
+   by --snap because the router snaps wire ends to its cell centres. */
+
+.port {
+  position: absolute;
+  z-index: 5;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background: #0a0f0d;
+  opacity: 0;
+  transition:
+    opacity 300ms ease,
+    box-shadow 400ms ease;
+}
+
+.portT {
+  top: -5px;
+  left: calc(50% + var(--snap));
+  translate: -50% 0;
+}
+
+.portB {
+  bottom: -5px;
+  left: calc(50% + var(--snap));
+  translate: -50% 0;
+}
+
+.portL {
+  left: -5px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.portR {
+  right: -5px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.node[data-ports~='t'] .portT,
+.node[data-ports~='r'] .portR,
+.node[data-ports~='b'] .portB,
+.node[data-ports~='l'] .portL {
+  opacity: 1;
+  border-color: rgb(var(--tone));
+  background: rgb(var(--tone));
+  box-shadow:
+    0 0 10px rgba(var(--tone), 0.95),
+    0 0 26px rgba(var(--tone), 0.5);
+}
+
+/* ------------------------------------------------------------ keyframes */
+
+@keyframes ringDraw {
+  from {
+    --a3-fill: 0%;
+    --a3-tail: 0.1;
+  }
+  to {
+    --a3-fill: 100%;
+    --a3-tail: 0.9;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------- small screens */
+
+@media (max-width: 640px) {
+  .hud {
+    inset: 14px 14px auto 14px;
+  }
+
+  .hudSub {
+    display: none;
+  }
+
+  .hint {
+    bottom: 14px;
+    font-size: 11px;
+  }
+}
+
+/* ------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .node,
+  .node::after,
+  .led,
+  .port,
+  .lane,
+  .slot {
+    transition-duration: 1ms;
+  }
+
+  .node[data-state='charging']::before {
+    animation-duration: 1ms;
+  }
+
+  .node[data-state='lit']::after,
+  .chipDot,
+  .caret {
+    animation: none;
+  }
+}

@@ -1,0 +1,66 @@
+{"t": 0.0, "type": "run_start", "queries": ["India"], "workers": 6}
+{"t": 3.34, "type": "search_start", "job": "newsdata:0", "source": "newsdata", "query": "India"}
+{"t": 3.341, "type": "search_start", "job": "mcp:0", "source": "mcp", "query": "India"}
+{"t": 4.415, "type": "search_error", "job": "newsdata:0", "source": "newsdata", "query": "India", "error": "RuntimeError('newsdata HTTP 422')"}
+{"t": 16.066, "type": "url_queued", "job": "mcp:0", "url": "https://www.theatlantic.com/international/2026/10/india-modi-cockroach-janta-party/689183"}
+{"t": 16.066, "type": "url_queued", "job": "mcp:0", "url": "https://www.aljazeera.com/news/2026/11/3/how-india-pulled-500-million-people-out-of-poverty-as-inequality-deepens"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.ndtv.com/india"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.cnbc.com/2026/10/29/india-china-us-israel-military-spending.html"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/indias-2026-gold-demand-seen-falling-six-year-low-price-rise-2026-11-03"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.aljazeera.com/features/2026/10/28/why-india-has-soured-on-trump-ahead-of-us-midterms"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://science.nasa.gov/earth/earth-observatory/arnab-strikes-india"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.newyorker.com/news/the-lede/inside-indias-cockroach-protests"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.climatepolicyinitiative.org/publication/landscape-of-green-finance-in-india"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/business/energy/india-seeks-220-billion-clean-energy-push-meet-2030-target-2026-10-28"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/india-says-trade-deal-with-us-will-not-hurt-its-farmers-2026-10-29"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/india-assures-commitment-lower-scotch-tariffs-india-uk-pact-sources-say-2026-11-02"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/india-volkswagen-clash-court-over-record-12-billion-tax-dispute-2026-10-29"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/why-is-indias-probe-scotch-imports-britain-rattling-liquor-majors-2026-11-02"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/india-meet-liquor-firms-domestic-giants-join-foreign-peers-scotch-dispute-2026-10-31"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/indian-authorities-tighten-security-ahead-big-opposition-march-delhi-2026-11-01"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/business/retail-consumer/nike-deepens-india-push-with-new-running-shoe-seeking-fresh-growth-engines-2026-10-29"}
+{"t": 16.067, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/business/energy/coal-india-misses-profit-view-costs-rise-amid-strong-demand-2026-10-29"}
+{"t": 16.068, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/india-markets-regulator-backs-removal-long-term-capital-gains-tax-foreign-2026-11-02"}
+{"t": 16.068, "type": "url_queued", "job": "mcp:0", "url": "https://www.reuters.com/world/india/indias-auto-stocks-rise-strong-october-sales-signal-resilient-festive-demand-2026-11-02"}
+{"t": 16.068, "type": "search_done", "job": "mcp:0", "source": "mcp", "query": "India", "n_urls": 20, "n_new": 20}
+{"t": 16.068, "type": "crawl_start", "worker": 0, "url": "https://www.theatlantic.com/international/2026/10/india-modi-cockroach-janta-party/689183"}
+{"t": 16.072, "type": "crawl_start", "worker": 1, "url": "h ttps://www.aljazeera.com/news/2026/11/3/how-india-pulled-500-million-people-out-of-poverty-as-inequality-deepens"}
+{"t": 16.073, "type": "crawl_start", "worker": 2, "url": "https://www.ndtv.com/india"}
+{"t": 16.075, "type": "crawl_start", "worker": 3, "url": "https://www.cnbc.com/2026/10/29/india-china-us-israel-military-spending.html"}
+{"t": 16.076, "type": "crawl_start", "worker": 4, "url": "https://www.reuters.com/world/india/indias-2026-gold-demand-seen-falling-six-year-low-price-rise-2026-11-03"}
+{"t": 16.078, "type": "crawl_start", "worker": 5, "url": "https://www.aljazeera.com/features/2026/10/28/why-india-has-soured-on-trump-ahead-of-us-midterms"}
+{"t": 16.927, "type": "crawl_done", "worker": 4, "url": "https://www.reuters.com/world/india/indias-2026-gold-demand-seen-falling-six-year-low-price-rise-2026-11-03", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 16.928, "type": "crawl_start", "worker": 4, "url": "https://science.nasa.gov/earth/earth-observatory/arnab-strikes-india"}
+{"t": 17.324, "type": "crawl_done", "worker": 2, "url": "https://www.ndtv.com/india", "ok": true, "chars": 9001, "error": null}
+{"t": 17.324, "type": "crawl_start", "worker": 2, "url": "https://www.newyorker.com/news/the-lede/inside-indias-cockroach-protests"}
+{"t": 17.79, "type": "crawl_done", "worker": 5, "url": "https://www.aljazeera.com/features/2026/10/28/why-india-has-soured-on-trump-ahead-of-us-midterms", "ok": true, "chars": 11021, "error": null}
+{"t": 17.79, "type": "crawl_start", "worker": 5, "url": "https://www.climatepolicyinitiative.org/publication/landscape-of-green-finance-in-india"}
+{"t": 17.835, "type": "crawl_done", "worker": 1, "url": "https://www.aljazeera.com/news/2026/11/3/how-india-pulled-500-million-people-out-of-poverty-as-inequality-deepens", "ok": true, "chars": 15241, "error": null}
+{"t": 17.835, "type": "crawl_start", "worker": 1, "url": "https://www.reuters.com/business/energy/india-seeks-220-billion-clean-energy-push-meet-2030-target-2026-10-28"}
+{"t": 18.178, "type": "crawl_done", "worker": 1, "url": "https://www.reuters.com/business/energy/india-seeks-220-billion-clean-energy-push-meet-2030-target-2026-10-28", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.178, "type": "crawl_start", "worker": 1, "url": "https://www.reuters.com/world/india/india-says-trade-deal-with-us-will-not-hurt-its-farmers-2026-10-29"}
+{"t": 18.31, "type": "crawl_done", "worker": 0, "url": "https://www.theatlantic.com/international/2026/10/india-modi-cockroach-janta-party/689183", "ok": true, "chars": 11455, "error": null}
+{"t": 18.31, "type": "crawl_start", "worker": 0, "url": "https://www.reuters.com/world/india/india-assures-commitment-lower-scotch-tariffs-india-uk-pact-sources-say-2026-11-02"}
+{"t": 18.459, "type": "crawl_done", "worker": 3, "url": "https://www.cnbc.com/2026/10/29/india-china-us-israel-military-spending.html", "ok": true, "chars": 8109, "error": null}
+{"t": 18.459, "type": "crawl_start", "worker": 3, "url": "https://www.reuters.com/world/india/india-volkswagen-clash-court-over-record-12-billion-tax-dispute-2026-10-29"}
+{"t": 18.591, "type": "crawl_done", "worker": 1, "url": "https://www.reuters.com/world/india/india-says-trade-deal-with-us-will-not-hurt-its-farmers-2026-10-29", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.591, "type": "crawl_start", "worker": 1, "url": "https://www.reuters.com/world/india/why-is-indias-probe-scotch-imports-britain-rattling-liquor-majors-2026-11-02"}
+{"t": 18.632, "type": "crawl_done", "worker": 0, "url": "https://www.reuters.com/world/india/india-assures-commitment-lower-scotch-tariffs-india-uk-pact-sources-say-2026-11-02", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.632, "type": "crawl_start", "worker": 0, "url": "https://www.reuters.com/world/india/india-meet-liquor-firms-domestic-giants-join-foreign-peers-scotch-dispute-2026-10-31"}
+{"t": 18.764, "type": "crawl_done", "worker": 3, "url": "https://www.reuters.com/world/india/india-volkswagen-clash-court-over-record-12-billion-tax-dispute-2026-10-29", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.764, "type": "crawl_start", "worker": 3, "url": "https://www.reuters.com/world/india/indian-authorities-tighten-security-ahead-big-opposition-march-delhi-2026-11-01"}
+{"t": 18.873, "type": "crawl_done", "worker": 1, "url": "https://www.reuters.com/world/india/why-is-indias-probe-scotch-imports-britain-rattling-liquor-majors-2026-11-02", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.873, "type": "crawl_start", "worker": 1, "url": "https://www.reuters.com/business/retail-consumer/nike-deepens-india-push-with-new-running-shoe-seeking-fresh-growth-engines-2026-10-29"}
+{"t": 18.988, "type": "crawl_done", "worker": 0, "url": "https://www.reuters.com/world/india/india-meet-liquor-firms-domestic-giants-join-foreign-peers-scotch-dispute-2026-10-31", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 18.988, "type": "crawl_start", "worker": 0, "url": "https://www.reuters.com/business/energy/coal-india-misses-profit-view-costs-rise-amid-strong-demand-2026-10-29"}
+{"t": 19.065, "type": "crawl_done", "worker": 3, "url": "https://www.reuters.com/world/india/indian-authorities-tighten-security-ahead-big-opposition-march-delhi-2026-11-01", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 19.065, "type": "crawl_start", "worker": 3, "url": "https://www.reuters.com/world/india/india-markets-regulator-backs-removal-long-term-capital-gains-tax-foreign-2026-11-02"}
+{"t": 19.188, "type": "crawl_done", "worker": 1, "url": "https://www.reuters.com/business/retail-consumer/nike-deepens-india-push-with-new-running-shoe-seeking-fresh-growth-engines-2026-10-29", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 19.188, "type": "crawl_start", "worker": 1, "url": "https://www.reuters.com/world/india/indias-auto-stocks-rise-strong-october-sales-signal-resilient-festive-demand-2026-11-02"}
+{"t": 19.252, "type": "crawl_done", "worker": 0, "url": "https://www.reuters.com/business/energy/coal-india-misses-profit-view-costs-rise-amid-strong-demand-2026-10-29", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 19.363, "type": "crawl_done", "worker": 3, "url": "https://www.reuters.com/world/india/india-markets-regulator-backs-removal-long-term-capital-gains-tax-foreign-2026-11-02", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 19.52, "type": "crawl_done", "worker": 4, "url": "https://science.nasa.gov/earth/earth-observatory/arnab-strikes-india", "ok": true, "chars": 20000, "error": null}
+{"t": 19.543, "type": "crawl_done", "worker": 1, "url": "https://www.reuters.com/world/india/indias-auto-stocks-rise-strong-october-sales-signal-resilient-festive-demand-2026-11-02", "ok": false, "chars": 0, "error": "Blocked by anti-bot protection: DataDome captcha"}
+{"t": 19.84, "type": "crawl_done", "worker": 2, "url": "https://www.newyorker.com/news/the-lede/inside-indias-cockroach-protests", "ok": true, "chars": 19991, "error": null}
+{"t": 65.935, "type": "crawl_done", "worker": 5, "url": "https://www.climatepolicyinitiative.org/publication/landscape-of-green-finance-in-india", "ok": true, "chars": 9093, "error": null}
+{"t": 65.971, "type": "finished", "total": 20, "ok": 8}

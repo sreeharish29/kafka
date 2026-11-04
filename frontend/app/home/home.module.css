@@ -1,0 +1,218 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Right edge that lights up when the beam arrives */
+.edge {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  background:
+    linear-gradient(to left, rgba(255, 255, 255, 0.9) 0, rgba(255, 90, 190, 0.55) 6px, rgba(90, 120, 255, 0.25) 60px, transparent 100%);
+  transition: opacity 120ms ease-out;
+}
+
+.page[data-phase="arrived"] .edge {
+  opacity: 1;
+  animation: edgeFlash 450ms ease-out forwards;
+}
+
+@keyframes edgeFlash {
+  0% { opacity: 0; width: 40px; }
+  30% { opacity: 1; width: 260px; }
+  100% { opacity: 1; width: 220px; }
+}
+
+.center {
+  position: relative;
+  z-index: 2;
+  width: min(760px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+/* Wrapper carries the glow so the textarea stays plain */
+.field {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #000;
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.field:focus-within {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.page[data-phase="firing"] .field,
+.page[data-phase="arrived"] .field {
+  border-color: rgba(255, 130, 210, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(255, 130, 210, 0.5),
+    0 0 18px rgba(255, 60, 180, 0.65),
+    0 0 60px rgba(255, 40, 170, 0.35),
+    inset 0 0 22px rgba(255, 60, 180, 0.22);
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  padding: 20px 22px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #fff;
+  caret-color: #fff;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Illuminated glass button */
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 140, 215, 0.55);
+  background:
+    radial-gradient(120% 140% at 100% 50%, rgba(255, 120, 210, 0.38), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(120, 30, 110, 0.18));
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(255, 60, 180, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: box-shadow 250ms ease, border-color 250ms ease, background 250ms ease, transform 150ms ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: rgba(255, 190, 235, 0.95);
+  box-shadow:
+    0 0 30px rgba(255, 60, 180, 0.55),
+    0 0 70px rgba(255, 40, 170, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.spark {
+  color: #ffb3e6;
+}
+
+.arrow {
+  opacity: 0.8;
+  transition: transform 200ms ease;
+}
+
+.button:hover:not(:disabled) .arrow {
+  transform: translateX(3px);
+}
+
+/* Click: the button flares, then keeps glowing while the beam travels */
+.page[data-phase="firing"] .button,
+.page[data-phase="arrived"] .button {
+  opacity: 1;
+  border-color: #fff;
+  background:
+    radial-gradient(120% 140% at 100% 50%, rgba(255, 255, 255, 0.75), rgba(255, 90, 190, 0.5) 45%, transparent 75%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(200, 50, 170, 0.35));
+  box-shadow:
+    0 0 24px rgba(255, 255, 255, 0.7),
+    0 0 50px rgba(255, 60, 180, 0.9),
+    0 0 120px rgba(255, 40, 170, 0.6);
+  animation: pulse 420ms ease-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 560px) {
+  .row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .button {
+    justify-content: center;
+  }
+  .hint {
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page[data-phase] .button,
+  .page[data-phase] .edge {
+    animation: none;
+  }
+}
